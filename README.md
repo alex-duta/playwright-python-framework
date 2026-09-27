@@ -1,6 +1,6 @@
 # Playwright Python Framework
 
-UI tests for the [Automation Playground](https://github.com/alexduta-tech/automation-lab) web app, written with Playwright, pytest and the Page Object Model. A Selenium version with the same tests is in [selenium-python-framework](https://github.com/alexduta-tech/selenium-python-framework).
+UI tests for the [Automation Playground](https://github.com/alex-duta/automation-lab) web app, written with Playwright, pytest and the Page Object Model. A Selenium version with the same tests is in [selenium-python-framework](https://github.com/alex-duta/selenium-python-framework).
 
 ## 1. Install
 
@@ -15,7 +15,7 @@ playwright install chromium firefox
 
 ## 2. Get and start the application
 
-The tests need the [Automation Playground](https://github.com/alexduta-tech/automation-lab) app. Clone it into the same folder as this repository:
+The tests need the [Automation Playground](https://github.com/alex-duta/automation-lab) app. Clone it into the same folder as this repository:
 
 ```
 workspace/
@@ -24,7 +24,7 @@ workspace/
 ```
 
 ```powershell
-git clone https://github.com/alexduta-tech/automation-lab.git
+git clone https://github.com/alex-duta/automation-lab.git
 ```
 
 `--reset-app-data` and the Docker setup look for the app's data there. If you cloned it somewhere else, set `AUT_USERS_FILE` (local runs) or `AUT_STORAGE_DIR` (Docker) to its location.
@@ -66,7 +66,7 @@ pytest -m smoke --browser-channel msedge --count=10 --reset-app-data
 pytest -m smoke --browser firefox --count=10 --reset-app-data
 ```
 
-Each run overwrites `reports/`, so copy the results somewhere else before starting the next browser.
+Each run may overwrite `reports/`, so copy the results somewhere else before starting the next browser.
 
 **Chrome, 50 repetitions**
 
@@ -82,7 +82,13 @@ $env:MONITOR_RESOURCES = "true"
 pytest -m smoke --browser-channel chrome --count=50 --reset-app-data
 ```
 
-`--reset-app-data` needs the app's `users.json`: set `AUT_USERS_FILE` to its path if it is not at the default location (see `utils/config.py`). If the file is not found, the run stops before any test starts.
+`--reset-app-data` needs the app's `users.json`: set `AUT_USERS_FILE` to its path if it is not at the default location (see `utils/config.py`), for example:
+
+```powershell
+$env:AUT_USERS_FILE = "C:\path\to\automation-lab\backend\app\storage\users.json"
+```
+
+If the file is not found, the run stops before any test starts.
 
 > PowerShell keeps `$env:` values until you close the terminal. Remove one with `Remove-Item Env:MONITOR_RESOURCES`.
 
@@ -137,13 +143,16 @@ For Edge and Firefox, replace `--browser-channel chrome` with `--browser-channel
 Good to know:
 - Results appear in this folder's `reports/` and `logs/`.
 - Changes to `tests/`, `pages/`, `utils/`, `monitoring/` and `data/` apply immediately. After changing `conftest.py`, `pyproject.toml`, `Dockerfile` or `requirements.txt`, rebuild: `docker compose build`, then `docker compose up -d --force-recreate`.
-- The app's data folder is mounted into the container for `--reset-app-data`. Set `AUT_STORAGE_DIR` to the app's `backend/app/storage` folder before starting the container if it is not at the default location (see `docker-compose.yml`).
+- The app's data folder is mounted into the container for `--reset-app-data`. Set `AUT_STORAGE_DIR` to the app's `backend/app/storage` folder before starting the container if it is not at the default location (see `docker-compose.yml`), for example:
+  ```powershell
+  $env:AUT_STORAGE_DIR = "C:\path\to\automation-lab\backend\app\storage"
+  ```
 - The image contains Chrome and Edge (versions in `/opt/browser-versions.txt`) and Playwright's Chromium and Firefox. To install specific Chrome and Edge versions, set `CHROME_VERSION` and `EDGE_VERSION` before `docker compose build` (only the current Chrome release can be installed).
 - Tests always run headless in Docker.
 
 ## 8. Measurement series with both frameworks
 
-To run this suite and the [Selenium version](https://github.com/alexduta-tech/selenium-python-framework) many times in a row, alternating the two frameworks and keeping every report, use `run_measurements.sh` from [test-metrics-analyzer](https://github.com/alexduta-tech/test-metrics-analyzer). Its README explains how to run it. The test cases are described in the app's [TEST_CASES.md](https://github.com/alexduta-tech/automation-lab/blob/main/TEST_CASES.md).
+To run this suite and the [Selenium version](https://github.com/alex-duta/selenium-python-framework) many times in a row, alternating the two frameworks and keeping every report, use `run_measurements.sh` from [web-test-framework-benchmark](https://github.com/alex-duta/web-test-framework-benchmark/tree/main/comparative_evaluation_selenium_playwright). The README in that folder explains how to run it. The test cases are described in the app's [TEST_CASES.md](https://github.com/alex-duta/automation-lab/blob/main/TEST_CASES.md).
 
 ## Project structure
 

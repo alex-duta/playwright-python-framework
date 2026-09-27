@@ -6,5 +6,5 @@ authors:
   - family-names: "Duță"
     given-names: "Alexandru"
     affiliation: "Technical University of Cluj-Napoca"
-repository-code: "https://github.com/alexduta-tech/playwright-python-framework"
+repository-code: "https://github.com/alex-duta/playwright-python-framework"
 license: Apache-2.0
